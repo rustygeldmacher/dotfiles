@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'csv'
+
+require 'optparse'
+
+filename = ARGV[0]
+if filename == '' || filename.nil?
+  puts '** Please specify a CSV file'
+end
+
+def guess_column_types(headers, first_row)
+  headers.each_with_index.map do |header, i|
+    "`#{header}` #{guess_value_type(first_row[i])}"
+  end
+end
+
+def guess_value_type(value)
+  case value
+  when Fixnum
+    "int(11)"
+  else
+    "varchar(255)"
+  end
+end
+
+def row_insert_values(row)
+  values = row.map { |col| col.inspect }.join(', ')
+  "(#{values})"
+end
+
+table_name = File.basename(filename, '.csv')
+puts "CREATE TABLE #{table_name}"
+
+CSV.open(filename, :converters => :numeric) do |csv|
+  headers = csv.shift
+  first_row = csv.shift
+  column_types = guess_column_types(headers, first_row)
+  puts "( #{column_types.join(', ')} );"
+  puts "INSERT INTO #{table_name} (#{headers.join(', ')})"
+  puts "VALUES"
+  print row_insert_values(first_row)
+  csv.each do |row|
+    print ", #{row_insert_values(row)}"
+  end
+end
+print ';'
+
+puts

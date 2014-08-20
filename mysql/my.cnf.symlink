@@ -1,0 +1,6 @@
+[client]
+user=root
+default_character_set=utf8
+
+[mysql]
+prompt=\\u@\\h [\\d]>\\_

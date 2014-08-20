@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Start up dottle
+source $HOME/.dottle/bootstrap
+

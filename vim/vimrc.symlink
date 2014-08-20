@@ -1,0 +1,157 @@
+" Leader
+let mapleader = " "
+
+" Use Vim config, not Vi
+set nocompatible
+" UTF8
+set encoding=utf8
+" Unix files
+set fileformats=unix,dos,mac
+" Swapfiles and backups are not needed
+set noswapfile
+set nobackup
+set nowritebackup
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+" Show line numbers
+set number
+" Always show cursor position
+set ruler
+" Always show the status bar
+set laststatus=2
+" Soft-tabs, two spaces
+set tabstop=2
+set softtabstop=2
+set expandtab
+" Indenting like you'd expect
+set autoindent
+set shiftwidth=2
+set smartindent
+" Show my searches as I type
+set incsearch
+" Show ruler at column 80
+set colorcolumn=80
+" Highlight my syntax
+syntax on
+" Display extra whitespace
+set list listchars=tab:»·,trail:·
+" highlight the current line
+set cursorline
+
+" Vundle --------------------
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'vim-scripts/genutils'
+Bundle 'tpope/vim-endwise'
+Bundle 'scrooloose/nerdtree'
+Bundle 'vim-scripts/greplace.vim'
+Bundle 'tpope/vim-rails'
+" RSpec syntax highlighting
+Bundle 'Keithbsmiley/rspec.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'vim-scripts/SelectBuf'
+Bundle 'thoughtbot/vim-rspec'
+Bundle 'kien/ctrlp.vim'
+Bundle 'acx0/Conque-Shell'
+Bundle 'JazzCore/ctrlp-cmatcher'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'chriskempson/base16-vim'
+Bundle 'bling/vim-airline'
+Bundle 'tomtom/tcomment_vim'
+Bundle 'puppetlabs/puppet-syntax-vim'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'stephpy/vim-yaml'
+Bundle 'jpalardy/vim-slime'
+Bundle 'rustygeldmacher/c99.vim'
+Bundle 'tpope/vim-ragtag'
+
+filetype plugin indent on
+" End Vundle ----------------
+
+" Sweet colors
+set background=dark
+colorscheme base16-tomorrow
+
+" So you don't have to let go of Shift
+command W w
+
+" Make moving around in insert mode easy
+imap <C-a> <Home>
+imap <C-e> <End>
+
+" Move to next window
+map <Leader>w <C-W> W
+" Rspec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>r :call RunNearestSpec()<CR>
+map <Leader>e :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+let g:rspec_command = ":ConqueTermSplit rspec {spec}"
+
+" Prefer The Silver Searcher over grep
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+" Search for the word under the cursor (Shift-K)
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Search all files in current dir (Ctrl-Shift-K)
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap <C-S-K> :Ag<SPACE>
+
+" Remove trailing whitespace on save
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd FileType c,cpp,java,mkd,php,ruby,python,puppet,eruby,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
+" NERDTree toggle w/ command-D (D for directory)
+map <Leader>d :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" Open NERDTree if we open an empty vim
+function! StartUp()
+  if 0 == argc()
+    NERDTree
+  end
+endfunction
+autocmd VimEnter * call StartUp()
+
+" SelectBuf
+nmap <unique> <silent> <Leader>b <Plug>SelectBuf
+
+" Give sanity to ctrl-p searches
+let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+let g:ctrlp_working_path_mode = ''
+
+" Airline
+let g:airline_powerline_fonts = 1
+
+" MacVim
+set guifont=Monaco:h14
+
+" Git commit messages
+autocmd Filetype gitcommit set textwidth=72 fo=aw2tq
+
+" Use Javascript syntax for .json files
+au! BufRead,BufNewFile *.json set filetype=javascript
+
+" Show highlight group of the text under the cursor
+map ,hi :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
+
+au FileType c setl ts=4 sw=4 sts=4 et
+
+" vim--slime should use tmux
+let g:slime_target = "tmux"
+

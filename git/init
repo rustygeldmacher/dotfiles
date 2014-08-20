@@ -1,0 +1,33 @@
+#!/bin/bash
+
+alias gs='git status'
+
+# Creates a new branch and sets up tracking to origin
+function newbranch {
+  git checkout -b $1
+  git config --add branch.$1.remote origin
+  git config --add branch.$1.merge refs/heads/$1
+}
+
+# Put the current git branch into the prompt
+function get_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
+}
+
+function get_stash_presence {
+  git stash show > /dev/null 2>&1 && echo '*'
+}
+
+function gitify_prompt {
+  local       WHITE="\[\033[1;37m\]"
+  local  LIGHT_GRAY="\[\033[0;37m\]"
+  local      YELLOW="\[\033[1;31m\]"
+  PS1="\h:\W$WHITE\$(get_git_branch)$YELLOW\$(get_stash_presence)$LIGHT_GRAY\$ "
+  PS2='> '
+  PS4='+ '
+}
+
+gitify_prompt
+
+# Add the git core bash completions
+source $TOPIC_PATH/git-completion.bash

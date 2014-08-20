@@ -1,0 +1,47 @@
+#!/bin/bash
+
+export EDITOR="/usr/bin/vim"
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxegedabagacad
+export GREP_OPTIONS='--color=auto'
+export JAVA_HOME='/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home'
+export PAGER=less
+export LESS='-iMSx2 -FXR'
+
+alias ls='ls -G'
+
+# enable tab completion for sudo
+complete -cf sudo
+
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/sbin:/usr/local/bin:$PATH
+
+# Changing to projects real easy-like
+proj() {
+  cd $(find ~/Projects -type d -maxdepth 2 -name "$1")
+}
+PROJECTS=$(find ~/Projects -type d -maxdepth 2 -exec basename {} \; | xargs)
+complete -W "$PROJECTS" proj
+
+3to2() {
+  mv $1 .tmp.expand
+  unexpand -t 3 .tmp.expand | expand -t 2 > $1
+  rm -f .tmp.expand
+}
+
+# syntax highlighting less
+hless() {
+  source-highlight --out-format=esc --output=STDOUT -i $1 | less -R
+}
+
+# Set iTerm2 tab name
+function tabname {
+  echo -ne "\033]0;"$*"\007"
+}
+
+function tmp {
+  if [[ ! -d ~/.tmp ]]; then
+    mkdir ~/.tmp
+  fi
+  cd ~/.tmp
+}
+

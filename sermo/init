@@ -1,0 +1,36 @@
+#!/bin/bash
+
+export V2_HOME=$HOME/Projects/Work/sermo
+export WORKING_COPY=true
+export SERMO_SETTINGS_PATH=$V2_HOME/lib/rails_deploy/config/settings.yml
+export BUILD_TARGET="/tmp/builds"
+
+export PATH=$V2_HOME/lib/rails_deploy/bin/local:$PATH
+
+# grep within an app, skipping logs, .git, binary files, etc.
+grepapp () {
+  find . -type f \( ! -iname "*.csv" ! -iname "*.log" ! -iname "*.svg" ! -name "*.jar" \) -print0 -o -type d \( -name ".git" \) -prune | xargs -0 grep $* | grep -v 'Binary file'
+}
+
+# a useful command to search recursively from V2_HOME, but skip non-files,
+# only including ruby source in the results
+grepall () {
+  find $V2_HOME/* -type f -print0 | xargs -0 grep -Rin --include=*.rb --include=*.rake --include=*.erb --include=*.js $*;
+}
+
+# Run puppet on the target server.
+puppetize() {
+  ssh $1 'sudo SKIP_SLEEP=true SKIP_PUPPETIZE_LOCK_CHECK=true /usr/sbin/puppetize'
+}
+
+# Insinuator shortcut
+insinuate() {
+  FILE_TO_COPY=$2 bundle exec cap $1 insinuator:copy_up_file
+}
+
+# Tail logs showing only requests
+rails_requests() {
+  tail -f /var/log/unified_rails.log | grep -E "Started (GET|POST|PUT|DELETE)"
+}
+
+source $TOPIC_PATH/sx.bash

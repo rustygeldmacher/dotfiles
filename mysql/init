@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export PATH=$PATH:/usr/local/mysql/bin
+
+alias mysql_start="/Library/StartupItems/MySQLCOM/MySQLCOM start"
+alias mysql_stop="/Library/StartupItems/MySQLCOM/MySQLCOM stop"
+
+export MYSQL_PS1="[\R:\m] (\u@\h) [\d]\n> "

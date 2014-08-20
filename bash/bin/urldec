@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'CGI'
+
+puts CGI::unescape(ARGV[0])
+

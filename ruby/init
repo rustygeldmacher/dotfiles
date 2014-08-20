@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Don't have rvmsudo check for secure_path
+export rvmsudo_secure_path=1
+
+# This loads RVM into a shell session.
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+# replace irb with pry
+if [[ $(which pry) ]]; then
+  alias irb='SKIP_RAILS=true pry'
+fi
+

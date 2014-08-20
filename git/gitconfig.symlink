@@ -1,0 +1,16 @@
+[core]
+	editor = /usr/bin/vim
+[user]
+	name = Rusty Geldmacher
+	email = russell.geldmacher@gmail.com
+[color]
+ branch = auto
+ diff = auto
+ status = auto
+[include]
+ path = ~/.githubrc
+[push]
+  default = simple
+[alias]
+  track = !sh -c 'git config \"branch.$1.remote\" $0 && git config \"branch.$1.merge\" \"refs/heads/$1\"'
+
