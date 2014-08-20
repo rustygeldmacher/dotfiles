@@ -10,7 +10,7 @@
 [include]
  path = ~/.githubrc
 [push]
-  default = simple
+  default = upstream
 [alias]
   track = !sh -c 'git config \"branch.$1.remote\" $0 && git config \"branch.$1.merge\" \"refs/heads/$1\"'
 
