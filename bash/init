@@ -1,14 +1,9 @@
 #!/bin/bash
 
 export EDITOR="/usr/bin/vim"
-export CLICOLOR=1
-export LSCOLORS=exfxcxdxbxegedabagacad
 export GREP_OPTIONS='--color=auto'
-export JAVA_HOME='/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home'
 export PAGER=less
 export LESS='-iMSx2 -FXR'
-
-alias ls='ls -G'
 
 # enable tab completion for sudo
 complete -cf sudo
@@ -33,11 +28,6 @@ fi
 # syntax highlighting less
 hless() {
   source-highlight --out-format=esc --output=STDOUT -i $1 | less -R
-}
-
-# Set iTerm2 tab name
-function tabname {
-  echo -ne "\033]0;"$*"\007"
 }
 
 function tmp {
