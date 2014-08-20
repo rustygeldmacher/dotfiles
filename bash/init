@@ -16,11 +16,13 @@ complete -cf sudo
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/sbin:/usr/local/bin:$PATH
 
 # Changing to projects real easy-like
-proj() {
-  cd $(find ~/Projects -type d -maxdepth 2 -name "$1")
-}
-PROJECTS=$(find ~/Projects -type d -maxdepth 2 -exec basename {} \; | xargs)
-complete -W "$PROJECTS" proj
+if [[ -d ~/Projects ]]; then
+  proj() {
+    cd $(find ~/Projects -maxdepth 2 -type d -name "$1")
+  }
+  PROJECTS=$(find ~/Projects -maxdepth 2 -type d -exec basename {} \; | xargs)
+  complete -W "$PROJECTS" proj
+fi
 
 3to2() {
   mv $1 .tmp.expand
