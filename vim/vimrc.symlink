@@ -43,34 +43,35 @@ set cursorline
 
 " Vundle --------------------
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
-Bundle 'vim-scripts/genutils'
-Bundle 'tpope/vim-endwise'
-Bundle 'scrooloose/nerdtree'
-Bundle 'vim-scripts/greplace.vim'
-Bundle 'tpope/vim-rails'
+Plugin 'gmarik/Vundle.vim'
+Plugin 'vim-scripts/genutils'
+Plugin 'tpope/vim-endwise'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-scripts/greplace.vim'
+Plugin 'tpope/vim-rails'
 " RSpec syntax highlighting
-Bundle 'Keithbsmiley/rspec.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'vim-scripts/SelectBuf'
-Bundle 'thoughtbot/vim-rspec'
-Bundle 'kien/ctrlp.vim'
-Bundle 'acx0/Conque-Shell'
-Bundle 'JazzCore/ctrlp-cmatcher'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'chriskempson/base16-vim'
-Bundle 'bling/vim-airline'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'puppetlabs/puppet-syntax-vim'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'stephpy/vim-yaml'
-Bundle 'jpalardy/vim-slime'
-Bundle 'rustygeldmacher/c99.vim'
-Bundle 'tpope/vim-ragtag'
+Plugin 'Keithbsmiley/rspec.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-scripts/SelectBuf'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'kien/ctrlp.vim'
+Plugin 'acx0/Conque-Shell'
+Plugin 'JazzCore/ctrlp-cmatcher'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
+Plugin 'bling/vim-airline'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'puppetlabs/puppet-syntax-vim'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'stephpy/vim-yaml'
+Plugin 'jpalardy/vim-slime'
+Plugin 'rustygeldmacher/c99.vim'
+Plugin 'tpope/vim-ragtag'
 
+call vundle#end()
 filetype plugin indent on
 " End Vundle ----------------
 
