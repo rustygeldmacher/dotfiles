@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export V2_HOME=$HOME/Projects/Work/sermo
+export V2_HOME=${V2_HOME:=$HOME/Projects/Work/sermo}
+export SERMO_SETTINGS_PATH=${SERMO_SETTINGS_PATH:=$V2_HOME/lib/rails_deploy/config/settings.yml}
 export WORKING_COPY=true
-export SERMO_SETTINGS_PATH=$V2_HOME/lib/rails_deploy/config/settings.yml
 export BUILD_TARGET="/tmp/builds"
 
 export PATH=$V2_HOME/lib/rails_deploy/bin/local:$PATH
