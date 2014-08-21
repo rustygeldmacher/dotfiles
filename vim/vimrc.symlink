@@ -95,6 +95,15 @@ map <Leader>e :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 let g:rspec_command = ":ConqueTermSplit rspec {spec}"
 
+if &term =~ '^screen'
+  " tmux will send xterm-style keys when its xterm-keys option is on
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+  map <Esc>[B <Down>
+endif
+
 " Prefer The Silver Searcher over grep
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
