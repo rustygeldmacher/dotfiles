@@ -20,6 +20,10 @@ setw -g aggressive-resize on
 set -g set-titles on
 set -g set-titles-string "#S:#I.#P #W"
 
+# Don't screw with vim
+unbind Escape
+set -s escape-time 0
+
 # Make navigation a bit more vim-like
 setw -g mode-keys vi
 unbind-key j
@@ -30,6 +34,16 @@ unbind-key h
 bind-key h select-pane -L
 unbind-key l
 bind-key l select-pane -R
+
+# Pane resizing
+unbind ^k
+bind-key -r ^k resize-pane -U 1
+unbind ^j
+bind-key -r ^j resize-pane -D 1
+unbind ^h
+bind-key -r ^h resize-pane -L 1
+unbind ^l
+bind-key -r ^l resize-pane -R 1
 
 # Clear history and pane at the same time
 bind-key b send-keys "clear && tmux clear-history" \; send-keys "Enter" 
@@ -42,6 +56,4 @@ set-option -g mouse-resize-pane on
 # Scroll your way into copy mode (scrollback buffer)
 # and select text for copying with the mouse
 setw -g mode-mouse on
-
-
 
