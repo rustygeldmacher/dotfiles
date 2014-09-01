@@ -32,8 +32,10 @@ set shiftwidth=2
 set smartindent
 " Show my searches as I type
 set incsearch
-" Show ruler at column 80
-set colorcolumn=80
+if version >= 703
+  " Show ruler at column 80
+  set colorcolumn=80
+endif
 " Highlight my syntax
 syntax on
 " Display extra whitespace
