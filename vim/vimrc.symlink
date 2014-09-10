@@ -58,10 +58,8 @@ Plugin 'tpope/vim-rails'
 Plugin 'Keithbsmiley/rspec.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-scripts/SelectBuf'
-Plugin 'thoughtbot/vim-rspec'
 Plugin 'kien/ctrlp.vim'
 Plugin 'acx0/Conque-Shell'
-Plugin 'JazzCore/ctrlp-cmatcher'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'bling/vim-airline'
@@ -72,6 +70,8 @@ Plugin 'stephpy/vim-yaml'
 Plugin 'jpalardy/vim-slime'
 Plugin 'rustygeldmacher/c99.vim'
 Plugin 'tpope/vim-ragtag'
+Plugin 'christoomey/vim-tmux-runner'
+Plugin 'gabebw/vim-spec-runner'
 
 call vundle#end()
 filetype plugin indent on
@@ -90,12 +90,16 @@ imap <C-e> <End>
 
 " Move to next window
 map <Leader>w <C-W> W
-" Rspec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>r :call RunNearestSpec()<CR>
-map <Leader>e :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-let g:rspec_command = ":ConqueTermSplit rspec {spec}"
+
+" vim-spec-runner mappings
+map <Leader>t <Plug>RunCurrentSpecFile
+map <Leader>r <Plug>RunFocusedSpec
+map <Leader>e <Plug>RunMostRecentSpec
+
+" Run Rspec in a tmux pane, if in a tmux session
+if &term =~ '^screen'
+  let g:spec_runner_dispatcher = 'call VtrSendCommand("{command}")'
+endif
 
 if &term =~ '^screen'
   " tmux will send xterm-style keys when its xterm-keys option is on
