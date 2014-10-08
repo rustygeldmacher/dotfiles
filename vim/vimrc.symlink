@@ -88,8 +88,8 @@ command W w
 imap <C-a> <Home>
 imap <C-e> <End>
 
-" Move to next window
-map <Leader>w <C-W> W
+" Quickly save 
+nmap <leader>w :w!<cr> 
 
 " vim-tmux-runner
 " Make sure to enable the RVM version and gemset
