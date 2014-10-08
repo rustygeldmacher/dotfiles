@@ -91,6 +91,10 @@ imap <C-e> <End>
 " Move to next window
 map <Leader>w <C-W> W
 
+" vim-tmux-runner
+" Make sure to enable the RVM version and gemset
+let g:VtrInitialCommand = shellescape("cd .")
+
 " vim-spec-runner mappings
 map <Leader>t <Plug>RunCurrentSpecFile
 map <Leader>r <Plug>RunFocusedSpec

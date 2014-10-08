@@ -46,7 +46,8 @@ unbind ^l
 bind-key -r ^l resize-pane -R 1
 
 # Clear history and pane at the same time
-bind-key b send-keys "clear && tmux clear-history" \; send-keys "Enter" 
+unbind C-l
+bind -n C-l send-keys -R \; clear-history
 
 # Just click it
 set-option -g mouse-select-pane on
