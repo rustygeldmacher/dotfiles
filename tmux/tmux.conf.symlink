@@ -10,6 +10,14 @@ set -g update-environment -r
 # soften status bar color from harsh green to light gray
 set -g status-bg '#666666'
 set -g status-fg '#aaaaaa'
+# THEME
+set -g window-status-current-bg white
+set -g window-status-current-fg black
+set -g window-status-current-attr bold
+set -g status-interval 60
+set -g status-left-length 30
+set -g status-left '#[fg=green](#S) #(whoami)'
+set -g status-right '#[fg=yellow]#(cut -d " " -f 1-3 /proc/loadavg)#[default] #[fg=white]%H:%M#[default]'
 
 # Rather than constraining window size to the maximum size of any client 
 # connected to the *session*, constrain window size to the maximum size of any 
@@ -48,6 +56,16 @@ bind-key -r ^l resize-pane -R 1
 # Clear history and pane at the same time
 unbind C-l
 bind -n C-l send-keys -R \; clear-history
+
+# Use Alt-arrow keys without prefix key to switch panes
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# Shift arrow to switch windows
+bind -n S-Left  previous-window
+bind -n S-Right next-window
 
 # Just click it
 set-option -g mouse-select-pane on
