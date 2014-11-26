@@ -7,6 +7,10 @@ export BUILD_TARGET="/tmp/builds"
 
 export PATH=$V2_HOME/lib/rails_deploy/bin/local:$PATH
 
+# For vagrant
+export FORWARD_SSH_AGENT=true
+export FORWARD_X11_AGENT=true
+
 # grep within an app, skipping logs, .git, binary files, etc.
 grepapp () {
   find . -type f \( ! -iname "*.csv" ! -iname "*.log" ! -iname "*.svg" ! -name "*.jar" \) -print0 -o -type d \( -name ".git" \) -prune | xargs -0 grep $* | grep -v 'Binary file'
