@@ -37,3 +37,5 @@ function tmp {
   cd ~/.tmp
 }
 
+alias ag='ag --color-path="0;34;40" --color-line-number="0;32;40"'
+
