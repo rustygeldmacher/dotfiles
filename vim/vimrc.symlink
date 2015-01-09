@@ -61,8 +61,6 @@ Plugin 'Keithbsmiley/rspec.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-scripts/SelectBuf'
 Plugin 'kien/ctrlp.vim'
-Plugin 'acx0/Conque-Shell'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'bling/vim-airline'
 Plugin 'tomtom/tcomment_vim'
@@ -74,6 +72,8 @@ Plugin 'rustygeldmacher/c99.vim'
 Plugin 'tpope/vim-ragtag'
 Plugin 'christoomey/vim-tmux-runner'
 Plugin 'gabebw/vim-spec-runner'
+Plugin 'JulesWang/css.vim'
+Plugin 'cakebaker/scss-syntax.vim'
 
 call vundle#end()
 filetype plugin indent on
