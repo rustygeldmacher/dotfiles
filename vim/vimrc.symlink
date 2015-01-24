@@ -135,7 +135,7 @@ fun! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd FileType c,cpp,java,mkd,php,ruby,python,puppet,eruby,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,javascript,mkd,php,ruby,python,puppet,eruby,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " NERDTree toggle w/ command-D (D for directory)
 map <Leader>d :NERDTreeToggle<CR>
