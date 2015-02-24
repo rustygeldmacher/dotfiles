@@ -14,3 +14,5 @@ if $(shopt -q login_shell) && [[ $TERM_TYPE != "screen" ]]; then
     fi
 fi
 
+export SERMO_FOUNDATION_HOME=~/src/sermo_foundation
+
