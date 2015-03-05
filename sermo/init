@@ -1,11 +1,12 @@
 #!/bin/bash
 
 export V2_HOME=${V2_HOME:=$HOME/Projects/Work/sermo}
-export SERMO_SETTINGS_PATH=${SERMO_SETTINGS_PATH:=$V2_HOME/lib/rails_deploy/config/settings.yml}
-export WORKING_COPY=true
-export BUILD_TARGET="/tmp/builds"
 
-export PATH=$V2_HOME/lib/rails_deploy/bin/local:$PATH
+if [[ -d "$V2_HOME" ]]; then
+  export SERMO_SETTINGS_PATH=${SERMO_SETTINGS_PATH:=$V2_HOME/lib/rails_deploy/config/settings.yml}
+  export PATH=$V2_HOME/lib/rails_deploy/bin/local:$PATH
+  source $TOPIC_PATH/sx.bash
+fi
 
 # For vagrant
 export FORWARD_SSH_AGENT=true
@@ -36,5 +37,3 @@ insinuate() {
 rails_requests() {
   tail -f /var/log/unified_rails.log | grep -E "Started (GET|POST|PUT|DELETE)"
 }
-
-source $TOPIC_PATH/sx.bash
