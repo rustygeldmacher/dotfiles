@@ -6,7 +6,7 @@ export PAGER=less
 export LESS='-iMSx2 -FXR'
 
 # My favorite shell color scheme
-source $TOPIC_PATH/base16-tomorrow-dark.sh
+source $TOPIC_PATH/base16-tomorrow.dark.sh
 
 # enable tab completion for sudo
 complete -cf sudo
