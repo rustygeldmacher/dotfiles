@@ -18,3 +18,8 @@ if [[ -n `which fc-cache` ]]; then
   fc-cache -f $font_dir
 fi
 
+echo "* iTerm2 topic installed."
+echo "* Don't forget to change the iTerm2 fonts (Regular and non-ASCII) to:"
+echo "*   Meslo 14 LG M DZ"
+echo "* Then load the iTerm2 color scheme:"
+echo "*   $TOPIC_PATH/base16-tomorrow.dark.256.itermcolors"
