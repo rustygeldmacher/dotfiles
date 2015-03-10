@@ -108,7 +108,7 @@ map <Leader>e <Plug>RunMostRecentSpec
 
 " Run Rspec in a tmux pane, if in a tmux session
 if &term =~ '^screen'
-  let g:spec_runner_dispatcher = 'call VtrSendCommand("{command}")'
+  let g:spec_runner_dispatcher = "VtrSendCommand! {command}"
 endif
 
 if &term =~ '^screen'
