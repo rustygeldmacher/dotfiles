@@ -2,25 +2,28 @@
 
 source ~/.home_dir/custom/.sermorc
 
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-tmux"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+  rm -f $SOCK 
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
+fi
+
 TERM_TYPE=$(echo $TERM | cut -c 1-6)
 if $(shopt -q login_shell) && [[ $TERM_TYPE != "screen" ]]; then
     # Attempt to discover a detached session and attach 
     # it, else create a new session
     WHOAMI=$(whoami)
     if tmux has-session -t $WHOAMI 2>/dev/null; then
-        tmux -2 attach-session -t $WHOAMI
+      tmux -2 attach-session -t $WHOAMI
     else
         tmux -2 new-session -s $WHOAMI
     fi
 fi
 
 export SERMO_FOUNDATION_HOME=~/src/sermo_foundation
+export AWS_CREDENTIAL_FILE=~/.aws-credentials
 
-# Predictable SSH authentication socket location.
-SOCK="/tmp/ssh-agent-$USER-screen"
-if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
-then
-  rm -f /tmp/ssh-agent-$USER-screen
-  ln -sf $SSH_AUTH_SOCK $SOCK
-  export SSH_AUTH_SOCK=$SOCK
-fi
+
