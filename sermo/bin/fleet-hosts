@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'sermo_foundation'
+
+fleet = FleetConfig.get_fleet_definition(ARGV[0])
+if fleet.nil?
+  puts "Couldn't find fleet #{ARGV[0]}"
+  exit 1
+end
+
+puts fleet.hosts.map(&:name).join("\n")
