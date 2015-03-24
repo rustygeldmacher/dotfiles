@@ -13,6 +13,9 @@ complete -cf sudo
 
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/sbin:/usr/local/bin:$PATH
 
+# vi editing mode
+set -o vi
+
 # Changing to projects real easy-like
 if [[ -d ~/Projects ]]; then
   proj() {
