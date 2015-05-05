@@ -99,7 +99,8 @@ nmap <leader>w :w!<cr>
 
 " vim-tmux-runner
 " Make sure to enable the RVM version and gemset
-let g:VtrInitialCommand = shellescape("cd .")
+let g:VtrInitialCommand = shellescape("cd . && set -o emacs")
+let g:VtrClearSequence = ""
 
 " vim-spec-runner mappings
 map <Leader>t <Plug>RunCurrentSpecFile
