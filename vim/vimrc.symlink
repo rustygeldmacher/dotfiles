@@ -71,6 +71,7 @@ Plugin 'jpalardy/vim-slime'
 Plugin 'rustygeldmacher/c99.vim'
 Plugin 'tpope/vim-ragtag'
 Plugin 'christoomey/vim-tmux-runner'
+Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabebw/vim-spec-runner'
 Plugin 'JulesWang/css.vim'
 Plugin 'cakebaker/scss-syntax.vim'
@@ -101,6 +102,14 @@ nmap <leader>w :w!<cr>
 " Make sure to enable the RVM version and gemset
 let g:VtrInitialCommand = shellescape("cd . && set -o emacs")
 let g:VtrClearSequence = ""
+
+" vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <M-Left> :TmuxNavigateLeft<cr>
+nnoremap <silent> <M-Down> :TmuxNavigateDown<cr>
+nnoremap <silent> <M-Up> :TmuxNavigateUp<cr>
+nnoremap <silent> <M-Right> :TmuxNavigateRight<cr>
 
 " vim-spec-runner mappings
 map <Leader>t <Plug>RunCurrentSpecFile
