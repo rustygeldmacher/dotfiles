@@ -44,6 +44,8 @@ syntax on
 set list listchars=tab:»·,trail:·
 " highlight the current line
 set cursorline
+" airline already shows the mode for me
+set noshowmode
 
 " Vundle --------------------
 filetype off
@@ -75,6 +77,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabebw/vim-spec-runner'
 Plugin 'JulesWang/css.vim'
 Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'gavinbeatty/vmath.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -134,6 +137,9 @@ endif
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 endif
+
+" vim-math
+vnoremap <expr> + VMATH_YankAndAnalyse()
 
 " Search for the word under the cursor (Shift-K)
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
