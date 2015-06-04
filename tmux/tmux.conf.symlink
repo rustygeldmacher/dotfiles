@@ -23,6 +23,13 @@ set -g status-right '#[fg=yellow]#(cut -d " " -f 1-3 /proc/loadavg)#[default] #[
 # client connected to *that window*. Much more reasonable.
 setw -g aggressive-resize on
 
+# re-number windows when one is closed
+set -g renumber-windows on
+
+# highlight window when it has new activity
+setw -g monitor-activity on
+set -g visual-activity on
+
 # Terminal emulator window title
 set -g set-titles on
 set -g set-titles-string "#S:#I.#P #W"
