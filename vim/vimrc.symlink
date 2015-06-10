@@ -61,6 +61,7 @@ Plugin 'tpope/vim-rails'
 " RSpec syntax highlighting
 Plugin 'Keithbsmiley/rspec.vim'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/SelectBuf'
 Plugin 'kien/ctrlp.vim'
 Plugin 'chriskempson/base16-vim'
