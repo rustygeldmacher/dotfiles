@@ -134,11 +134,6 @@ if &term =~ '^screen'
   map <Esc>[B <Down>
 endif
 
-" Prefer The Silver Searcher over grep
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
-
 " Search for the word under the cursor (Shift-K)
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
@@ -177,7 +172,7 @@ nmap <unique> <silent> <Leader>b <Plug>SelectBuf
 let g:ctrlp_root_markers = ['.ctrlp']
 let g:ctrlp_working_path_mode = 'rw'
 if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor\ --ignore\ tags
+  set grepprg=ag\ --follow\ --nogroup\ --nocolor\ --ignore\ tags
   let g:ctrlp_user_command='ag %s -l --follow --nocolor -g ""'
   let g:ctrlp_use_caching=0
 endif
