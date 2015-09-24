@@ -58,8 +58,6 @@ Plugin 'tpope/vim-endwise'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/greplace.vim'
 Plugin 'tpope/vim-rails'
-" RSpec syntax highlighting
-Plugin 'Keithbsmiley/rspec.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/SelectBuf'
@@ -67,18 +65,25 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'chriskempson/base16-vim'
 Plugin 'bling/vim-airline'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'puppetlabs/puppet-syntax-vim'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'stephpy/vim-yaml'
 Plugin 'jpalardy/vim-slime'
-Plugin 'rustygeldmacher/c99.vim'
 Plugin 'tpope/vim-ragtag'
 Plugin 'christoomey/vim-tmux-runner'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabebw/vim-spec-runner'
+Plugin 'gavinbeatty/vmath.vim'
+
+" Syntax plugins
+Plugin 'othree/yajs.vim'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'puppetlabs/puppet-syntax-vim'
+Plugin 'Keithbsmiley/rspec.vim'
+Plugin 'stephpy/vim-yaml'
+Plugin 'rustygeldmacher/c99.vim'
 Plugin 'JulesWang/css.vim'
 Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'gavinbeatty/vmath.vim'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'pangloss/vim-javascript'
 
 call vundle#end()
 filetype plugin indent on
@@ -144,6 +149,9 @@ nnoremap <C-S-K> :Ag<SPACE>
 " vim-math
 vnoremap <expr> + VMATH_YankAndAnalyse()
 
+" No folding for vim-markdown
+let g:vim_markdown_folding_disabled=1
+
 " Remove trailing whitespace on save
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -151,7 +159,7 @@ fun! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd FileType c,cpp,java,javascript,mkd,php,ruby,python,puppet,eruby,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,javascript,mkd,php,ruby,python,puppet,eruby,html,coffee,yaml autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " NERDTree toggle w/ command-D (D for directory)
 map <Leader>d :NERDTreeToggle<CR>
