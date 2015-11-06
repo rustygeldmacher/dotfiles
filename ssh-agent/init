@@ -8,6 +8,10 @@ function add_identities {
   do
     ssh-add $pem
   done
+  for id in $(ls ~/.ssh/*.pub 2> /dev/null | grep -v id_rsa)
+  do
+    ssh-add $(dirname $id)/$(basename -s .pub $id)
+  done
 }
 
 function start_agent {
