@@ -13,14 +13,14 @@ fi
 
 TERM_TYPE=$(echo $TERM | cut -c 1-6)
 if $(shopt -q login_shell) && [[ $TERM_TYPE != "screen" ]]; then
-    # Attempt to discover a detached session and attach 
-    # it, else create a new session
-    WHOAMI=$(whoami)
-    if tmux has-session -t $WHOAMI 2>/dev/null; then
-      tmux -2 attach-session -t $WHOAMI
-    else
-        tmux -2 new-session -s $WHOAMI
-    fi
+  # Attempt to discover a detached session and attach 
+  # it, else create a new session
+  WHOAMI=$(whoami)
+  if tmux has-session -t $WHOAMI 2>/dev/null; then
+    tmux -2 attach-session -t $WHOAMI
+  else
+    tmux -2 new-session -s $WHOAMI
+  fi
 fi
 
 export SERMO_FOUNDATION_HOME=~/src/sermo_foundation
