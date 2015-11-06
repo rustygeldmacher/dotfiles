@@ -54,6 +54,7 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'vim-scripts/genutils'
+Plugin 'wincent/terminus'
 Plugin 'tpope/vim-endwise'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/greplace.vim'
@@ -71,9 +72,9 @@ Plugin 'christoomey/vim-tmux-runner'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabebw/vim-spec-runner'
 Plugin 'gavinbeatty/vmath.vim'
+Plugin 'wookiehangover/jshint.vim'
 
 " Syntax plugins
-Plugin 'othree/yajs.vim'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'puppetlabs/puppet-syntax-vim'
 Plugin 'Keithbsmiley/rspec.vim'
@@ -84,6 +85,7 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'pangloss/vim-javascript'
+Plugin 'briancollins/vim-jst'
 
 call vundle#end()
 filetype plugin indent on
@@ -159,7 +161,7 @@ fun! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd FileType c,cpp,java,javascript,mkd,php,ruby,python,puppet,eruby,html,coffee,yaml autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,javascript,mkd,php,ruby,python,puppet,eruby,html,coffee,yaml,hbs autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " NERDTree toggle w/ command-D (D for directory)
 map <Leader>d :NERDTreeToggle<CR>
