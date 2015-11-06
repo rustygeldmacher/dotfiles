@@ -34,6 +34,11 @@ set -g set-titles-string "#S:#I.#P #W"
 unbind Escape
 set -s escape-time 0
 
+# Open new windows and panes in the current path
+bind '"' split-window -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+bind c new-window -c "#{pane_current_path}"
+
 # Make navigation a bit more vim-like
 setw -g mode-keys vi
 unbind-key j
