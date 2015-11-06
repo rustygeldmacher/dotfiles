@@ -11,7 +11,7 @@ function newbranch {
 
 # Put the current git branch into the prompt
 function get_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
 function get_stash_presence {
@@ -22,7 +22,7 @@ function gitify_prompt {
   local       WHITE="\[\033[1;37m\]"
   local  LIGHT_GRAY="\[\033[0;37m\]"
   local      YELLOW="\[\033[1;31m\]"
-  PS1="\h:\W$WHITE\$(get_git_branch)$YELLOW\$(get_stash_presence)$LIGHT_GRAY\$ "
+  PS1="$PS1$WHITE\$(get_git_branch)$YELLOW\$(get_stash_presence)$LIGHT_GRAY\$ "
   PS2='> '
   PS4='+ '
 }

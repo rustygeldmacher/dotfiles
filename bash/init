@@ -45,3 +45,5 @@ function tmp {
 
 alias ag='ag --color-path="0;34;40" --color-line-number="0;32;40"'
 
+export PS1='\[\033[1;37m\][\[\033[0m\]$(date +"%T")\[\033[1;37m\]]\[\033[0m\] \[\033[1;37m\]\w \[\033[0m\]'
+
