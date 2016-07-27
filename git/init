@@ -31,3 +31,6 @@ gitify_prompt
 
 # Add the git core bash completions
 source $TOPIC_PATH/git-completion.bash
+
+# Add completion for remove branch alias
+__git_complete 'git rmbr' _git_branch
