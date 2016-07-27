@@ -13,6 +13,7 @@ set -g status-fg '#aaaaaa'
 set -g window-status-current-bg white
 set -g window-status-current-fg black
 set -g window-status-current-attr bold
+set -g window-status-current-format '#I:#{?window_zoomed_flag,#[fg=red](,}#W#{?window_zoomed_flag,#[fg=red])#F,}'
 set -g status-interval 60
 set -g status-left-length 30
 set -g status-left '#[fg=green](#S) #(whoami)'
@@ -33,6 +34,9 @@ set -g set-titles-string "#S:#I.#P #W"
 # Don't screw with vim
 unbind Escape
 set -s escape-time 0
+
+# Kill the window
+bind X confirm-before -p "kill-window #P? (y/n)" kill-window
 
 # Open new windows and panes in the current path
 bind '"' split-window -c "#{pane_current_path}"
