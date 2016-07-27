@@ -55,6 +55,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'vim-scripts/genutils'
 Plugin 'wincent/terminus'
+Plugin 'editorconfig/editorconfig-vim'
 Plugin 'tpope/vim-endwise'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/greplace.vim'
@@ -64,7 +65,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/SelectBuf'
 Plugin 'kien/ctrlp.vim'
 Plugin 'chriskempson/base16-vim'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'jpalardy/vim-slime'
 Plugin 'tpope/vim-ragtag'
@@ -73,8 +75,11 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabebw/vim-spec-runner'
 Plugin 'gavinbeatty/vmath.vim'
 Plugin 'wookiehangover/jshint.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'fidian/hexmode'
 
 " Syntax plugins
+Plugin 'vim-ruby/vim-ruby'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'puppetlabs/puppet-syntax-vim'
 Plugin 'Keithbsmiley/rspec.vim'
@@ -85,7 +90,9 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 Plugin 'briancollins/vim-jst'
+Plugin 'Glench/Vim-Jinja2-Syntax'
 
 call vundle#end()
 filetype plugin indent on
@@ -189,6 +196,7 @@ endif
 
 " Airline
 let g:airline_powerline_fonts = 1
+let g:airline_theme='tomorrow'
 
 " MacVim
 set guifont=Monaco:h14
@@ -198,6 +206,9 @@ autocmd Filetype gitcommit set textwidth=72 fo=aw2tq
 
 " Use Javascript syntax for .json files
 au! BufRead,BufNewFile *.json set filetype=javascript
+
+" Use Javascript syntax for .jsx files
+au! BufRead,BufNewFile *.jsx set filetype=javascript
 
 " Show highlight group of the text under the cursor
 map ,hi :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">" . " FG:" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"fg#")<CR>
