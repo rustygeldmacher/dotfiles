@@ -43,7 +43,18 @@ function tmp {
   cd ~/.tmp
 }
 
+function agvim {
+  vim $(ag -l $1)
+}
+
 alias ag='ag --color-path="0;34;40" --color-line-number="0;32;40"'
+
+# So we can reference history from scripts and aliases
+alias bangbang="history | tail -2 | head -1 | sed -E 's/^ +[0-9]+ +//g'"
+# edit the output from the previous command
+alias vim!='vim $(`bangbang` | xargs)'
+
+alias ww='ruby -rdate -e "puts Date.today.cweek"'
 
 export PS1='\[\033[1;37m\][\[\033[0m\]$(date +"%T")\[\033[1;37m\]]\[\033[0m\] \[\033[1;37m\]\w \[\033[0m\]'
 
