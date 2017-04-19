@@ -74,9 +74,9 @@ Plugin 'christoomey/vim-tmux-runner'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'gabebw/vim-spec-runner'
 Plugin 'gavinbeatty/vmath.vim'
-Plugin 'wookiehangover/jshint.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'fidian/hexmode'
+Plugin 'vim-syntastic/syntastic'
 
 " Syntax plugins
 Plugin 'vim-ruby/vim-ruby'
@@ -116,6 +116,21 @@ imap <C-e> <End>
 " Quickly save 
 nmap <leader>w :w!<cr> 
 
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Don't check syntax for HTML files cuz the checker blows
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "passive_filetypes": ["html"] }
+
 " vim-tmux-runner
 " Make sure to enable the RVM version and gemset
 let g:VtrInitialCommand = shellescape("cd . && set -o emacs")
@@ -129,10 +144,11 @@ nnoremap <silent> <M-Down> :TmuxNavigateDown<cr>
 nnoremap <silent> <M-Up> :TmuxNavigateUp<cr>
 nnoremap <silent> <M-Right> :TmuxNavigateRight<cr>
 
-" vim-spec-runner mappings
+" vim-spec-runner
 map <Leader>t <Plug>RunCurrentSpecFile
 map <Leader>r <Plug>RunFocusedSpec
 map <Leader>e <Plug>RunMostRecentSpec
+let g:spec_runner_preloader = ''
 
 " Run Rspec in a tmux pane, if in a tmux session
 if &term =~ '^screen'
