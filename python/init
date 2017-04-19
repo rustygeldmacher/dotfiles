@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Initialize pyenv if found
+if [[ $(which pyenv) ]]; then
+  eval "$(pyenv init -)"
+fi
+
+# Command line completion for AWS CLI tools
+if [[ $(which aws_completer) ]]; then
+   complete -C aws_completer aws
+fi
