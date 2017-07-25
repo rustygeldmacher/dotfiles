@@ -116,6 +116,13 @@ imap <C-e> <End>
 " Quickly save 
 nmap <leader>w :w!<cr> 
 
+" Tags
+" C-] to jump in, C-[ to jump back
+nnoremap <C-[> <C-T>
+" C-, for prev, C-. for next
+nnoremap <C-,> :tp<CR>
+nnoremap <C-.> :tn<CR>
+
 " syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}

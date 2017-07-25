@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'CGI'
+
+puts CGI::escape(ARGV[0])
