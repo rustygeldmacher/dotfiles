@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+
+module GitBranchCheck
+  class Collector
+    attr_reader :path, :released, :in_acceptance, :in_development
+
+    def initialize(path)
+      @path = path
+      @released = []
+      @in_acceptance = []
+      @in_development = []
+    end
+
+    def any?
+      [released, in_acceptance, in_development].any?(&:any?)
+    end
+
+    def collect
+      Dir.chdir(path) do
+        merged_master = branch_list('--merged master')
+        @released = merged_master
+
+        has_staging = `git branch`.split.include?('staging')
+
+        in_acceptance = has_staging ? branch_list('--merged staging') - merged_master : []
+        if has_staging
+          @in_acceptance = in_acceptance
+        end
+
+        all_branches = branch_list
+        in_development = all_branches - merged_master - in_acceptance
+        @in_development = in_development
+      end
+      self
+    end
+
+    private
+
+    def branch_list(command = '')
+      `git branch #{command}`.split.reject do |branch|
+        ['*', 'master', 'staging'].include?(branch)
+      end
+    end
+  end
+end
+
+module GitBranchCheck
+  class Reporter
+    attr_reader :collector
+
+    def initialize(collector)
+      @collector = collector
+    end
+
+    def report
+      print_branches(collector.released, "Released (in master)")
+      print_branches(collector.in_acceptance, "In Acceptance (in staging, not in master)")
+      print_branches(collector.in_development, "In development (not in master or staging)")
+    end
+
+    def print_branches(branches, header)
+      if branches.any?
+        puts "* #{header}"
+        branches.each do |branch|
+          puts "  - #{branch}"
+        end
+      end
+    end
+  end
+end
+
+path = ARGV[0] || Dir.pwd
+collector = GitBranchCheck::Collector.new(path)
+if collector.collect.any?
+  GitBranchCheck::Reporter.new(collector).report
+end
