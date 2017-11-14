@@ -93,6 +93,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'briancollins/vim-jst'
 Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'elixir-editors/vim-elixir'
 
 call vundle#end()
 filetype plugin indent on
