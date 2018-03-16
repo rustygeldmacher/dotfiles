@@ -70,6 +70,7 @@ alias bangbang="history | tail -2 | head -1 | sed -E 's/^ +[0-9]+ +//g'"
 alias vim!='vim $(`bangbang` | xargs)'
 
 alias ww='ruby -rdate -e "puts Date.today.cweek"'
+alias uuid="ruby -rsecurerandom -e 'puts SecureRandom.uuid.delete(\"-\")'"
 
 export PS1='\[\033[1;37m\][\[\033[0m\]$(date +"%T")\[\033[1;37m\]]\[\033[0m\] \[\033[1;37m\]\w \[\033[0m\]'
 
