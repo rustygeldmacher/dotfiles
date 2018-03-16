@@ -147,7 +147,7 @@ let g:syntastic_mode_map = {
 " vim-tmux-runner
 " Make sure to enable the RVM version and gemset
 let g:VtrInitialCommand = shellescape("cd . && set -o emacs")
-let g:VtrClearSequence = ""
+let g:VtrClearSequence = ""
 
 " vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
