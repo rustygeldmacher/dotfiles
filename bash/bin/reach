@@ -1,0 +1,180 @@
+#!/usr/bin/env ruby
+
+require 'getoptlong'
+
+# Ideas
+# --error=<stop|continue|pause|shell>: what do when on error
+#        stop     is the default
+#        continue carries on
+#        shell    opens a new shell on the app, exiting the shell continues
+#
+# Maybe some rudimentary template strings?
+# - %CWD% -- current working directory
+# - %APP% -- app name
+# - %BRANCH% -- current branch
+
+class Config
+  ERROR_MODES = %i[continue stop]
+
+  attr_accessor :base_dir,
+    :command,
+    :on_error,
+    :pause,
+    :print_app_name
+
+  def initialize
+    @base_dir = '~/src'
+    @print_app_name = :before
+    @suppress_output = false
+    @except_apps = []
+    if ['', nil].include?(ENV['CONTINUE_ON_ERROR'])
+      @on_error = :stop
+    else
+      @on_error = :continue
+    end
+    @pause = false
+    parse_args
+  end
+
+  def apps
+    apps = if ENV['APPS']
+      ENV['APPS'].split
+    else
+      puts "-- The `APPS` environment variable is not defined."
+      puts "-- Please set this variable to configure which apps to reach."
+      exit 1
+    end
+    apps - @except_apps
+  end
+
+  private
+
+  def parse_args
+    opts = GetoptLong.new(
+      [ '--find', '-f', GetoptLong::NO_ARGUMENT ],
+      [ '--except', '-x', GetoptLong::REQUIRED_ARGUMENT ],
+      [ '--on-error', '-e', GetoptLong::REQUIRED_ARGUMENT ],
+      [ '--pause', '-p', GetoptLong::NO_ARGUMENT ],
+      [ '--no-name', '-n', GetoptLong::NO_ARGUMENT ],
+      [ '--help', '-h', GetoptLong::NO_ARGUMENT ]
+    )
+    opts.ordering = GetoptLong::REQUIRE_ORDER
+
+    opts.each do |opt, arg|
+      case opt
+      when '--help'
+        puts <<-HELP
+          Options:
+            --except <app,app>\t\tExclude apps from the run
+            --on-error <continue|stop>\tWhat to do when a command fails (default: stop)
+            --find\t\t\tPrint out app names where the command succeeds
+            --pause\t\t\tPause for input in between apps
+            --no-name\t\t\tDo not print app name before running command
+        HELP
+        exit 0
+      when '--find'
+        @on_error = :continue
+        @suppress_output = true
+        @print_app_name = :on_success
+      when '--except'
+        @except_apps = arg.split(',')
+      when '--on-error'
+        @on_error = arg.to_sym
+        unless ERROR_MODES.include?(@on_error)
+          puts '-- Invalid option for error mode'
+          puts "-- Please use of the following: #{ERROR_MODES.join(', ')}"
+          exit 1
+        end
+      when '--pause'
+        @pause = true
+      when '--no-name'
+        @print_app_name = false
+      end
+    end
+
+    parse_command(ARGV)
+  end
+
+  def parse_command(argv)
+    if argv.size == 1
+      @command = argv.first
+    elsif argv.size > 1
+      @command = argv.map { |c| "'#{c}'" }.join(' ')
+    end
+    if @suppress_output
+      @command += " > /dev/null 2>&1"
+    end
+  end
+end
+
+class Runner
+  attr_reader :command
+
+  def initialize(command)
+    @command = command
+  end
+
+  def success?
+    !!@success
+  end
+
+  def run
+    full_command = [command]
+
+    if rbenv_command?
+      app_ruby_version ||= if File.exist?('.ruby-version')
+        File.readlines('.ruby-version').first.chomp
+      else
+        RUBY_VERSION
+      end
+
+      if app_ruby_version != RUBY_VERSION
+        rbenv_prefix = 'eval "$(rbenv init -)"; rbenv shell $(cat .ruby-version)'
+        full_command.unshift(rbenv_prefix)
+      end
+    end
+
+    @success = system(full_command.join('; '))
+  end
+
+  private
+
+  def rbenv_command?
+    program = command.split(' ').first
+    location = `which #{program}`.chomp
+    location =~ /rbenv/
+  end
+end
+
+config = Config.new
+
+config.apps.each do |app|
+  app_dir = File.expand_path(File.join(config.base_dir, app))
+  next unless Dir.exist?(app_dir)
+  Dir.chdir(app_dir) do
+    if config.print_app_name == :before
+      puts app
+    end
+
+    if config.command
+      runner = Runner.new(config.command)
+      runner.run
+
+      if runner.success?
+        if config.print_app_name == :on_success
+          puts app
+        end
+      end
+
+      if config.pause
+        puts "Finished #{app}, press return to continue..."
+        STDIN.gets
+      end
+
+      if !runner.success? && config.on_error == :stop
+        puts "Failure for #{app}"
+        exit 1
+      end
+    end
+  end
+end
