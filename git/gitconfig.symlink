@@ -13,15 +13,13 @@
   default = current
 [alias]
   track = !sh -c 'git config \"branch.$1.remote\" $0 && git config \"branch.$1.merge\" \"refs/heads/$1\"'
-  commit = commit -vv
   rmbr = "!f() { git branch -d \"$1\"; git push origin :$1; }; f"
   co = checkout
-[diff "ansible-vault"]
-  textconv = ansible-vault --vault-password-file=~/.vault_pass view
-  cachetextconv = false
 [hub]
   protocol = https
 [core]
 	editor = /usr/bin/vim
 [credential]
 	helper = osxkeychain
+[commit]
+	verbose = true
