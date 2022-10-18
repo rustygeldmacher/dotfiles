@@ -3,10 +3,6 @@
 require 'getoptlong'
 
 # Ideas
-# --error=<stop|continue|pause|shell>: what do when on error
-#        stop     is the default
-#        continue carries on
-#        shell    opens a new shell on the app, exiting the shell continues
 #
 # Maybe some rudimentary template strings?
 # - %CWD% -- current working directory
@@ -14,7 +10,7 @@ require 'getoptlong'
 # - %BRANCH% -- current branch
 
 class Config
-  ERROR_MODES = %i[continue stop]
+  ERROR_MODES = %i[continue stop shell]
 
   attr_accessor :base_dir,
     :command,
@@ -27,6 +23,9 @@ class Config
     @print_app_name = :before
     @suppress_output = false
     @except_apps = []
+    @only_apps = []
+    @from_app = nil
+    @to_app = nil
     if ['', nil].include?(ENV['CONTINUE_ON_ERROR'])
       @on_error = :stop
     else
@@ -44,7 +43,23 @@ class Config
       puts "-- Please set this variable to configure which apps to reach."
       exit 1
     end
-    apps - @except_apps
+    if @only_apps.any?
+      apps = apps & @only_apps
+    end
+    apps = apps - @except_apps
+    if @from_app
+      app_index = apps.index(@from_app)
+      if app_index > -1
+        apps = apps.slice(app_index..-1)
+      end
+    end
+    if @to_app
+      app_index = apps.index(@to_app)
+      if app_index > -1
+        apps = apps.slice(0..app_index)
+      end
+    end
+    apps
   end
 
   private
@@ -53,6 +68,9 @@ class Config
     opts = GetoptLong.new(
       [ '--find', '-f', GetoptLong::NO_ARGUMENT ],
       [ '--except', '-x', GetoptLong::REQUIRED_ARGUMENT ],
+      [ '--only', '-o', GetoptLong::REQUIRED_ARGUMENT ],
+      [ '--from', '-r', GetoptLong::REQUIRED_ARGUMENT ],
+      [ '--to', '-t', GetoptLong::REQUIRED_ARGUMENT ],
       [ '--on-error', '-e', GetoptLong::REQUIRED_ARGUMENT ],
       [ '--pause', '-p', GetoptLong::NO_ARGUMENT ],
       [ '--no-name', '-n', GetoptLong::NO_ARGUMENT ],
@@ -65,8 +83,11 @@ class Config
       when '--help'
         puts <<-HELP
           Options:
-            --except <app,app>\t\tExclude apps from the run
-            --on-error <continue|stop>\tWhat to do when a command fails (default: stop)
+            --except <app,app,...>\t\tExclude apps from the run
+            --only <app,app,...>\t\tOnly run with the given apps
+            --from app\t\tStart run at specified app
+            --to app\t\tEnd run at specified app
+            --on-error <continue|stop|shell>\tWhat to do when a command fails (default: stop)
             --find\t\t\tPrint out app names where the command succeeds
             --pause\t\t\tPause for input in between apps
             --no-name\t\t\tDo not print app name before running command
@@ -78,6 +99,12 @@ class Config
         @print_app_name = :on_success
       when '--except'
         @except_apps = arg.split(',')
+      when '--only'
+        @only_apps = arg.split(',')
+      when '--from'
+        @from_app = arg.strip
+      when '--to'
+        @to_app = arg.strip
       when '--on-error'
         @on_error = arg.to_sym
         unless ERROR_MODES.include?(@on_error)
@@ -171,9 +198,15 @@ config.apps.each do |app|
         STDIN.gets
       end
 
-      if !runner.success? && config.on_error == :stop
+      if !runner.success?
         puts "Failure for #{app}"
-        exit 1
+        case config.on_error
+        when :stop
+          exit 1
+        when :shell
+          puts "Opening shell in directory, type exit to proceed to next app..."
+          Runner.new(ENV['SHELL']).run
+        end
       end
     end
   end
