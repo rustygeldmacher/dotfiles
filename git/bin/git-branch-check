@@ -1,11 +1,13 @@
 #!/usr/bin/env ruby
 
+require 'getoptlong'
+
 module GitBranchCheck
   class Collector
     attr_reader :path, :released, :in_acceptance, :in_development
 
-    def initialize(path)
-      @path = path
+    def initialize(args)
+      @path = args[:path]
       @released = []
       @in_acceptance = []
       @in_development = []
@@ -69,8 +71,54 @@ module GitBranchCheck
   end
 end
 
-path = ARGV[0] || Dir.pwd
-collector = GitBranchCheck::Collector.new(path)
+module GitBranchCheck
+  class Cleaner
+    attr_reader :collector
+
+    def initialize(collector)
+      @collector = collector
+    end
+
+    def clean
+      return if collector.released.empty?
+
+      puts "* Cleaning up released branches..."
+
+      Dir.chdir(collector.path) do
+        collector.released.each do |branch|
+          puts "  - #{branch}"
+          system("git branch -d #{branch} &> /dev/null")
+          system("git push origin :#{branch} &> /dev/null")
+        end
+      end
+    end
+  end
+end
+
+options = GetoptLong.new(
+  ['--clean', GetoptLong::NO_ARGUMENT]
+)
+
+args = {
+  path: Dir.pwd,
+  fix: false
+}
+
+options.each do |option, value|
+  case option
+  when '--clean'
+    args[:clean] = true
+  end
+end
+
+args[:path] = ARGV[0] || args[:path]
+
+collector = GitBranchCheck::Collector.new(args)
+
 if collector.collect.any?
   GitBranchCheck::Reporter.new(collector).report
+end
+
+if args[:clean]
+  GitBranchCheck::Cleaner.new(collector).clean
 end
