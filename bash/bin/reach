@@ -46,20 +46,19 @@ class Config
     if @only_apps.any?
       apps = apps & @only_apps
     end
-    apps = apps - @except_apps
     if @from_app
       app_index = apps.index(@from_app)
-      if app_index > -1
+      if app_index
         apps = apps.slice(app_index..-1)
       end
     end
     if @to_app
       app_index = apps.index(@to_app)
-      if app_index > -1
+      if app_index
         apps = apps.slice(0..app_index)
       end
     end
-    apps
+    apps - @except_apps
   end
 
   private
