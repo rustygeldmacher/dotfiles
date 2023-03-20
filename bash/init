@@ -26,7 +26,11 @@ source $TOPIC_PATH/base16-tomorrow.dark.sh
 # enable tab completion for sudo
 complete -cf sudo
 
-export PATH=~/.bin:/opt/local/bin:/opt/local/sbin:/usr/local/sbin:/usr/local/bin:$PATH
+dottle_padd ~/.bin
+dottle_padd /opt/local/bin
+dottle_padd /opt/local/sbin
+dottle_padd /usr/local/sbin
+dottle_padd /usr/local/bin
 
 # vi editing mode
 set -o vi
@@ -73,4 +77,3 @@ alias ww='ruby -rdate -e "puts Date.today.cweek"'
 alias uuid="ruby -rsecurerandom -e 'puts SecureRandom.uuid.delete(\"-\")'"
 
 export PS1='\[\033[1;37m\][\[\033[0m\]$(date +"%T")\[\033[1;37m\]]\[\033[0m\] \[\033[1;37m\]\w \[\033[0m\]'
-
