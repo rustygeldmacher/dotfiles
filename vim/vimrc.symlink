@@ -51,6 +51,9 @@ runtime! macros/matchit.vim
 nnoremap j gj
 nnoremap k gk
 
+" Allow mouse scroll, etc
+set mouse=a
+
 " Allow hidden buffers
 set hidden
 
