@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Crtl-D (EOF) closes tmux windows and it's annoying
+set -o ignoreeof
