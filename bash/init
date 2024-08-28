@@ -31,6 +31,8 @@ dottle_padd /opt/local/bin
 dottle_padd /opt/local/sbin
 dottle_padd /usr/local/sbin
 dottle_padd /usr/local/bin
+dottle_padd ./bin
+dottle_padd ./node_modules/bin
 
 # vi editing mode
 set -o vi

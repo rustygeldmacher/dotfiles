@@ -7,7 +7,9 @@ if [ -f ~/.bashrc ]; then
    source ~/.bashrc
 fi
 
-complete -C /usr/local/bin/terraform terraform
+if [ -e /usr/local/bin/terraform ]; then
+  complete -C /usr/local/bin/terraform terraform
+fi
 
+export CHIRPSTRAP_FINCH=true
 [ -f $HOME/.chirpstrap/env.sh ] && source $HOME/.chirpstrap/env.sh
-
