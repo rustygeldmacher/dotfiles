@@ -1,0 +1,15 @@
+# Use a newer version of Bash than what comes with macOS
+brew 'bash'
+brew 'coreutils'
+brew 'direnv'
+brew 'findutils'
+brew 'jq'
+brew 'rbenv'
+brew 'the_silver_searcher'
+brew 'tmux'
+brew 'watch'
+brew 'wget'
+
+# Menubar stats
+cask 'stats'
+cask '1password/tap/1password-cli'

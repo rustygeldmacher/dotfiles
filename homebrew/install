@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ! `which brew &> /dev/null` ]; then
+  echo Installing Homebrew...
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+echo Installing Homebrew bundle...
+brew bundle --file=$TOPIC_PATH/Brewfile install
+
+echo "Setting up Homebrew bash (you might be asked for sudo password)"
+sudo echo /opt/homebrew/bin/bash >> /etc/shells
+chsh -s /opt/homebrew/bin/bash
