@@ -1,0 +1,10 @@
+#!/bin/bash
+
+nerd_fonts_dir=$TOPIC_PATH/nerd-fonts
+
+if [ ! -d $nerd_fonts_dir ]; then
+  git clone --depth 1 https://github.com/ryanoasis/nerd-fonts $nerd_fonts_dir
+fi
+
+cd $nerd_fonts_dir
+./install.sh Hack &> /dev/null
