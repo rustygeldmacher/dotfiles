@@ -9,14 +9,16 @@
  status = auto
  ui = always
 [include]
- path = ~/.githubrc
+  path = ~/.githubrc
+[include]
+  path = ~/.git-aliases
 [push]
   default = current
+	autoSetupRemote = true
 [alias]
   track = !sh -c 'git config \"branch.$1.remote\" $0 && git config \"branch.$1.merge\" \"refs/heads/$1\"'
   rmbr = "!f() { git branch -d \"$1\"; git push origin :$1; }; f"
   pr-url = "!sh -c 'gh pr view --json url | jq .url -r'"
-  co = checkout
 [hub]
   protocol = https
 [core]

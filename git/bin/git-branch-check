@@ -1,46 +1,81 @@
 #!/usr/bin/env ruby
 
 require 'getoptlong'
+require 'tempfile'
 
 module GitBranchCheck
+  INTEGRATION_BRANCH = "staging"
+
   class Collector
-    attr_reader :path, :released, :in_acceptance, :in_development
+    attr_reader :path, :released, :in_integration, :in_development
 
     def initialize(args)
       @path = args[:path]
       @released = []
-      @in_acceptance = []
+      @in_integration = []
       @in_development = []
     end
 
     def any?
-      [released, in_acceptance, in_development].any?(&:any?)
+      [released, in_integration, in_development].any?(&:any?)
     end
 
     def collect
       Dir.chdir(path) do
-        merged_master = branch_list('--merged master')
-        @released = merged_master
+        all_branches = branch_list
 
-        has_staging = `git branch`.split.include?('staging')
-
-        in_acceptance = has_staging ? branch_list('--merged staging') - merged_master : []
-        if has_staging
-          @in_acceptance = in_acceptance
+        @released = branch_list("--merged #{default_branch}")
+        (all_branches - released).each do |branch|
+          if is_merged?(branch, default_branch)
+            released << branch
+          end
         end
 
-        all_branches = branch_list
-        in_development = all_branches - merged_master - in_acceptance
-        @in_development = in_development
+        if integration_branch
+          @in_integration = branch_list("--merged #{integration_branch}") - released
+          (all_branches - released - in_integration).each do |branch|
+            if is_merged?(branch, integration_branch)
+              in_integration << branch
+            end
+          end
+        end
+
+        @in_development = all_branches - released - in_integration
       end
       self
+    end
+
+    def is_merged?(branch, target_branch)
+      merge_base = `git merge-base #{target_branch} #{branch}`.strip
+      is_merged = false
+      Tempfile.create do |file|
+        diff_command = "git diff --color=never #{merge_base}..#{branch}"
+        file.write(`#{diff_command}`)
+        file.close
+        if system("git apply --reverse --check --quiet #{file.path}")
+          is_merged = true
+        end
+      end
+
+      # TODO: If still can't figure out, check if the PR was merged
+      # gh pr view --json mergedAt | jq .mergedAt -r
+
+      is_merged
+    end
+
+    def default_branch
+      @default_branch ||= `git symbolic-ref refs/remotes/origin/HEAD`.strip.gsub('refs/remotes/origin/', '')
+    end
+
+    def integration_branch
+      `git branch`.split.include?(INTEGRATION_BRANCH)
     end
 
     private
 
     def branch_list(command = '')
       `git branch #{command}`.split.reject do |branch|
-        ['*', 'master', 'staging'].include?(branch)
+        ['*', default_branch, integration_branch].include?(branch)
       end
     end
   end
@@ -55,9 +90,14 @@ module GitBranchCheck
     end
 
     def report
-      print_branches(collector.released, "Released (in master)")
-      print_branches(collector.in_acceptance, "In Acceptance (in staging, not in master)")
-      print_branches(collector.in_development, "In development (not in master or staging)")
+      default_branch = collector.default_branch
+      integration_branch = collector.integration_branch
+
+      print_branches(collector.released, "Released (in #{default_branch})")
+      if integration_branch
+        print_branches(collector.in_integration, "In integration (in #{integration_branch}, not in #{default_branch})")
+      end
+      print_branches(collector.in_development, "In development (not merged)")
     end
 
     def print_branches(branches, header)
@@ -87,7 +127,7 @@ module GitBranchCheck
       Dir.chdir(collector.path) do
         collector.released.each do |branch|
           puts "  - #{branch}"
-          system("git branch -d #{branch} &> /dev/null")
+          system("git branch -D #{branch} &> /dev/null")
           system("git push origin :#{branch} &> /dev/null")
         end
       end
