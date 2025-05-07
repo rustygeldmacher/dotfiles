@@ -14,5 +14,11 @@ if [[ $(which pry) ]]; then
   alias irb='SKIP_RAILS=true pry'
 fi
 
+function serve {
+  dir="${1:-.}"
+  port="${2:-9090}"
+  ruby -run -e httpd $dir -p $port
+}
+
 alias bake='bundle exec rake'
 alias rspec='bundle exec rspec'

@@ -68,6 +68,16 @@ function vimag {
   vim $(ag -l "$@")
 }
 
+function get_aws_info {
+  if [[ -n "$AWS_PROFILE" ]]; then
+    local output="<$AWS_PROFILE"
+    if [[ -n "$AWS_REGION" ]]; then
+      output="${output}:${AWS_REGION}"
+    fi
+    echo -n " ${output}>"
+  fi
+}
+
 alias ag='ag --color-path="0;34;40" --color-line-number="0;32;40"'
 
 # So we can reference history from scripts and aliases
@@ -78,4 +88,4 @@ alias vim!='vim $(`bangbang` | xargs)'
 alias ww='ruby -rdate -e "puts Date.today.cweek"'
 alias uuid="ruby -rsecurerandom -e 'puts SecureRandom.uuid.delete(\"-\")'"
 
-export PS1='\[\033[1;37m\][\[\033[0m\]$(date +"%T")\[\033[1;37m\]]\[\033[0m\] \[\033[1;37m\]\w \[\033[0m\]'
+export PS1='\[\033[1;37m\][\[\033[0m\]$(date +"%T")\[\033[1;37m\]]\[\033[0m\]\[\033[1;33m\]$(get_aws_info) \[\033[1;37m\]\w \[\033[0m\]'
