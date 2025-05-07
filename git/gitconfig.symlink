@@ -1,5 +1,6 @@
 [core]
 	editor = /usr/bin/vim
+  pager = delta
 [user]
 	name = Rusty Geldmacher
 	email = russell.geldmacher@gmail.com
@@ -12,6 +13,8 @@
   path = ~/.githubrc
 [include]
   path = ~/.git-aliases
+[interactive]
+  diffFilter = delta --color-only
 [push]
   default = current
 	autoSetupRemote = true
@@ -19,11 +22,14 @@
   track = !sh -c 'git config \"branch.$1.remote\" $0 && git config \"branch.$1.merge\" \"refs/heads/$1\"'
   rmbr = "!f() { git branch -d \"$1\"; git push origin :$1; }; f"
   pr-url = "!sh -c 'gh pr view --json url | jq .url -r'"
+	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)%an <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
 [hub]
   protocol = https
-[core]
-	editor = /usr/bin/vim
 [credential]
 	helper = osxkeychain
 [commit]
 	verbose = true
+[delta]
+  navigate = true  # use n and N to move between diff sections
+[merge]
+  conflictstyle = zdiff3

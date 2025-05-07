@@ -5,6 +5,7 @@ require 'tempfile'
 
 module GitBranchCheck
   INTEGRATION_BRANCH = "staging"
+  INTEGRATION_BRANCHES = ["staging", /^integration\/*/]
 
   class Collector
     attr_reader :path, :released, :in_integration, :in_development
@@ -71,11 +72,17 @@ module GitBranchCheck
       `git branch`.split.include?(INTEGRATION_BRANCH)
     end
 
+    def integration_branches
+      `git branch`.split.select do |branch|
+        INTEGRATION_BRANCHES.any? { |i| i === branch }
+      end
+    end
+
     private
 
     def branch_list(command = '')
       `git branch #{command}`.split.reject do |branch|
-        ['*', default_branch, integration_branch].include?(branch)
+        ['*', default_branch, integration_branches].flatten.include?(branch)
       end
     end
   end
