@@ -5,6 +5,9 @@ export GREP_OPTIONS='--color=auto'
 export PAGER=less
 export LESS='-iMSx2 -FXR'
 
+# Set up bash history config
+source $TOPIC_PATH/history.sh
+
 # My favorite shell color scheme
 source $TOPIC_PATH/base16-tomorrow.dark.sh
 
@@ -78,13 +81,8 @@ function get_aws_info {
   fi
 }
 
+alias ll='ls -l'
 alias ag='ag --color-path="0;34;40" --color-line-number="0;32;40"'
-
-# So we can reference history from scripts and aliases
-alias bangbang="history | tail -2 | head -1 | sed -E 's/^ +[0-9]+ +//g'"
-# edit the output from the previous command
-alias vim!='vim $(`bangbang` | xargs)'
-
 alias ww='ruby -rdate -e "puts Date.today.cweek"'
 alias uuid="ruby -rsecurerandom -e 'puts SecureRandom.uuid.delete(\"-\")'"
 
