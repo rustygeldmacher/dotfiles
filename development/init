@@ -1,0 +1,32 @@
+# Quick access to projects
+function workon() {
+  cd $1
+}
+
+if [[ -d ~/src ]]; then
+  for dir in $(find ~/src -mindepth 1 -maxdepth 1 -type d); do
+    local project_name=$(basename $dir)
+    alias "wo-${project_name}"="workon $dir"
+  done
+fi
+
+# Ruby aliases
+alias bake='bundle exec rake'
+alias rspec='bundle exec rspec'
+alias be='bundle exec'
+
+# Serve the current dir as a web site
+function serve {
+  dir="${1:-.}"
+  port="${2:-9090}"
+  ruby -run -e httpd $dir -p $port
+}
+
+if /usr/bin/which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if /usr/bin/which nodenv > /dev/null; then eval "$(nodenv init -)"; fi
+if /usr/bin/which pyenv > /dev/null; then eval "$(pyenv init --path)"; fi
+
+# Command line completion for AWS CLI tools
+if [[ $(which aws_completer) ]]; then
+   complete -C aws_completer aws
+fi
