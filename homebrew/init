@@ -1,5 +1,8 @@
 #!/bin/bash
 
-if [ -d /opt/homebrew ]; then
+if [[ "$HOMEBREW_PREFIX" != "/opt/homebrew" && -d /opt/homebrew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+
+  # This will help library building
+  export LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH"
 fi
